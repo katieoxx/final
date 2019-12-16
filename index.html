@@ -1,0 +1,62 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+
+
+</head>
+
+<body>
+<div id="map" style="width: 100%; height: 100%;">
+<!--  //<button id="addButton">see census tracts</button>-->
+    </div>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+<script type="text/javascript">
+
+var map = L.map('map', {
+    center: [39.981192, -75.155399], zoom: 12
+    });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+    
+function addDataToMap(data, map) {
+    var dataLayer = L.geoJson(data, {
+        onEachFeature: function(feature, layer) {
+            var popupText = 
+                
+            layer.bindPopup("ghost: " + feature.properties.NAME + "<br>location: " + feature.properties.PLACE_NAME + "<br>year: " + feature.properties.year + "<br>description: " + feature.properties.REASON); }
+        });
+    dataLayer.addTo(map);
+}
+
+//TEST change icon (stopped 6:20pm, 12.12.19)
+/*var myIcon = L.icon({
+    iconUrl: 'ghost.svg',
+    shadowUrl: 'wisp.svg',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [1,1], 
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+   
+var marker = L.marker([], {icon:
+    myIcon}).addTo(map).bindPopup("boo");
+        */
+
+//start new code to toggle census layer on 12/16 11 am:
+$.getJSON("wards_post.geojson", function (data){
+    addDataToMap(data,map);
+});
+    
+ //   document.getElementById("addButton").addEventListener("click", addJoin_max.geojson);
+
+//end new code
+          
+$.getJSON("ghosts.json", function(data) { 
+    addDataToMap(data, map); 
+    });
+</script>
+
+</body>
+
+</html>
